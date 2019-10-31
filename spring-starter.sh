@@ -52,6 +52,16 @@ function dependencyManagement () {
 	DEPENDENCIES=$(eval "dialog --stdout --backtitle \"Spring Initializer Terminal Edition\" --checklist \"Choose dependencies\" 0 0 0 $DEPENDENCY_LIST" | sed 's/ /,/g')
 }
 
+function changeBuildTool() {
+	BUILD_TOOL_SELECTIONS=$(echo $STARTER_METADATA | jq '.type.values | map(.id, .name)[]')
+	BUILD_TOOL=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(echo "$BUILD_TOOL_SELECTIONS" | sed '0~2 s/$/ off/g' | tr '\n' ' ')")
+}
+
+function changeSpringBootVersion() {
+	//.bootVersion.default
+	SPRING_BOOT_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.bootVersion.values | map(.id, .name)[]')
+	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(echo "$SPRING_BOOT_VERSION_SELECTIONS" | sed '0~2 s/$/ off/g' | tr '\n' ' ')")
+}
 
 function changeLanguage () {
 	LANGUAGE_SELECTIONS=$(echo $STARTER_METADATA | jq '.language.values | map(.id, .name)[]')
@@ -82,7 +92,7 @@ function changeJavaVersion () {
 
 while [ 1 ]
 do
-	CHOICE=$(dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --title "Select option" --menu "Artifact information:\nGroup id:            $GROUP_ID\nArtifact id:         $ARTIFACT_ID\n\nBuild tool:          $BUILD_TOOL\nLanguage:            $LANGUAGE\nSpring Boot version: $SPRING_BOOT_VERSION\nJava version:        $JAVA_VERSION\n" 0 0 0 "a" "Artifact settings" "p" "Change project information" "l" "Change language" "j" "Change Java version" "d" "Manage dependencies" "c" "Create project")
+	CHOICE=$(dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --title "Select option" --menu "Artifact information:\nGroup id:            $GROUP_ID\nArtifact id:         $ARTIFACT_ID\n\nBuild tool:          $BUILD_TOOL\nLanguage:            $LANGUAGE\nSpring Boot version: $SPRING_BOOT_VERSION\nJava version:        $JAVA_VERSION\n" 0 0 0 "a" "Artifact settings" "b" "Change build tool" "s" "Change Spring Boot version" "l" "Change language" "j" "Change Java version" "d" "Manage dependencies" "c" "Create project")
 
 	if [ $? -ne 0 ]
 	then 
@@ -93,6 +103,12 @@ do
 	case $CHOICE in
 		"a")
 			artifactSettings
+			;;
+		"b")
+			changeBuildTool
+			;;
+		"s")
+			changeSpringBootVersion
 			;;
 		"l")
 			changeLanguage
