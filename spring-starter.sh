@@ -63,7 +63,6 @@ function changeBuildTool() {
 }
 
 function changeSpringBootVersion() {
-	//.bootVersion.default
 	SPRING_BOOT_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.bootVersion.values | map(.id, .name)[]')
 	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$SPRING_BOOT_VERSION_SELECTIONS")")
 }
@@ -73,9 +72,6 @@ function changeLanguage () {
     LANGUAGE=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$LANGUAGE_SELECTIONS")")
 }
 
-
-# select java version screen
-# (without anything selected so far...)
 function changeJavaVersion () {
 	JAVA_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.javaVersion.values | map(.id, .name)[]' | sed '0~2 s/^\"/\"Java /g')
 	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 0 $(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS")")
