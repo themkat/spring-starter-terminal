@@ -52,20 +52,25 @@ function dependencyManagement () {
 	DEPENDENCIES=$(eval "dialog --stdout --backtitle \"Spring Initializer Terminal Edition\" --checklist \"Choose dependencies\" 0 0 0 $DEPENDENCY_LIST" | sed 's/ /,/g')
 }
 
+function _transformChoicesToDialogRadioOptions() {
+	CHOICES=$1
+	echo "$CHOICES" | sed '0~2 s/$/ off/g' | tr '\n' ' '
+}
+
 function changeBuildTool() {
 	BUILD_TOOL_SELECTIONS=$(echo $STARTER_METADATA | jq '.type.values | map(.id, .name)[]')
-	BUILD_TOOL=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(echo "$BUILD_TOOL_SELECTIONS" | sed '0~2 s/$/ off/g' | tr '\n' ' ')")
+	BUILD_TOOL=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$BUILD_TOOL_SELECTIONS")")
 }
 
 function changeSpringBootVersion() {
 	//.bootVersion.default
 	SPRING_BOOT_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.bootVersion.values | map(.id, .name)[]')
-	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(echo "$SPRING_BOOT_VERSION_SELECTIONS" | sed '0~2 s/$/ off/g' | tr '\n' ' ')")
+	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$SPRING_BOOT_VERSION_SELECTIONS")")
 }
 
 function changeLanguage () {
 	LANGUAGE_SELECTIONS=$(echo $STARTER_METADATA | jq '.language.values | map(.id, .name)[]')
-    LANGUAGE=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(echo "$LANGUAGE_SELECTIONS" | sed '0~2 s/$/ off/g' | tr '\n' ' ')")
+    LANGUAGE=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$LANGUAGE_SELECTIONS")")
 }
 
 
@@ -75,7 +80,7 @@ function changeJavaVersion () {
 	JAVA_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.javaVersion.values | map(.id, .name)[]' | sed '0~2 s/^\"/\"Java /g')
 	# TODO: find a better way to determine the last number
 	NUM_JAVA_VERSIONS=$(expr $(echo "$JAVA_VERSION_SELECTIONS" | wc -l) / 2)
-	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 $NUM_JAVA_VERSIONS $(echo "$JAVA_VERSION_SELECTIONS" | sed '0~2 s/$/ off/g' | tr '\n' ' ')")
+	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 $NUM_JAVA_VERSIONS $(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS")")
 }
 
 
