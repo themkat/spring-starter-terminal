@@ -78,9 +78,7 @@ function changeLanguage () {
 # (without anything selected so far...)
 function changeJavaVersion () {
 	JAVA_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.javaVersion.values | map(.id, .name)[]' | sed '0~2 s/^\"/\"Java /g')
-	# TODO: find a better way to determine the last number
-	NUM_JAVA_VERSIONS=$(expr $(echo "$JAVA_VERSION_SELECTIONS" | wc -l) / 2)
-	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 $NUM_JAVA_VERSIONS $(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS")")
+	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 0 $(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS")")
 }
 
 
