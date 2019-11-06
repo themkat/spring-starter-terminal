@@ -84,17 +84,6 @@ function changeJavaVersion () {
 }
 
 
-# flow:
-# main menu with all main information
-# menu items:
-# - change groupId/artifactId/description
-# - Change build tool (maven/gradle)
-# - Change language
-# - Change Java Version
-# - Manage dependencies
-# - Create project
-
-
 while [ 1 ]
 do
 	CHOICE=$(dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --title "Select option" --menu "Artifact information:\nGroup id:            $GROUP_ID\nArtifact id:         $ARTIFACT_ID\n\nBuild tool:          $BUILD_TOOL\nLanguage:            $LANGUAGE\nSpring Boot version: $SPRING_BOOT_VERSION\nJava version:        $JAVA_VERSION\n" 0 0 0 "a" "Artifact settings" "b" "Change build tool" "s" "Change Spring Boot version" "l" "Change language" "j" "Change Java version" "d" "Manage dependencies" "c" "Create project")
