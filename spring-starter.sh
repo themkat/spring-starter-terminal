@@ -42,13 +42,22 @@ function artifactSettings () {
 
 
 function dependencyManagement () {
-	# TODO: simple search..
-
+	# TODO: simple search..?
 	# TODO: could --help-button be used 
-	
 	# TODO: how should descriptions be viewed?
-	# TODO: make the choices "persistent" between "saves"
-	DEPENDENCY_LIST=$(echo $STARTER_METADATA | jq '.dependencies.values | map(.values[]) | map(.id, .name)[]' | sed '0~2 s/$/\noff/g' | tr '\n' ' ')
+
+	# get all the possible selections, default to not selected
+	DEPENDENCY_LIST=$(echo $STARTER_METADATA | jq '.dependencies.values | map(.values[]) | map(.id, .name)[]' | sed '{N;s/\n/ /;}' | sed 's/$/ off/')
+	
+	# turn our currently selected dependencies on
+	for SELECTED_DEPENDENCY in $(echo "$DEPENDENCIES" | tr ',' '\n')
+	do
+	    DEPENDENCY_LIST=$(echo "$DEPENDENCY_LIST" | sed -E "s/(\"$SELECTED_DEPENDENCY\" .*) off/\1 on/")
+	done
+
+	# make it into a format that dialog works with (without newlines)
+	DEPENDENCY_LIST=$(echo $DEPENDENCY_LIST | tr '\n' ' ')
+	
 	DEPENDENCIES=$(eval "dialog --stdout --backtitle \"Spring Initializer Terminal Edition\" --checklist \"Choose dependencies\" 0 0 0 $DEPENDENCY_LIST" | sed 's/ /,/g')
 }
 
