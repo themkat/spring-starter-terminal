@@ -53,28 +53,34 @@ function dependencyManagement () {
 }
 
 function _transformChoicesToDialogRadioOptions() {
+	# I iz stupid, so usually prefer to use sed in smaller blocks like this. Probably a better way to do them in one. I prefer readability :)
 	CHOICES=$1
-	echo "$CHOICES" | sed '0~2 s/$/ off/g' | tr '\n' ' '
+	CURRENT_SELECTION=$2
+	echo "$CHOICES" | sed '0~2 s/$/ off/' | sed '{N;s/\n/ /;}' | sed -E "s/(\"$CURRENT_SELECTION\" .*) off/\1 on/" | tr '\n' ' '
 }
 
 function changeBuildTool() {
 	BUILD_TOOL_SELECTIONS=$(echo $STARTER_METADATA | jq '.type.values | map(.id, .name)[]')
-	BUILD_TOOL=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$BUILD_TOOL_SELECTIONS")")
+	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$BUILD_TOOL_SELECTIONS" "$BUILD_TOOL")
+	BUILD_TOOL=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeSpringBootVersion() {
 	SPRING_BOOT_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.bootVersion.values | map(.id, .name)[]')
-	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$SPRING_BOOT_VERSION_SELECTIONS")")
+	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$SPRING_BOOT_VERSION_SELECTIONS" "$SPRING_BOOT_VERSION")
+	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeLanguage () {
 	LANGUAGE_SELECTIONS=$(echo $STARTER_METADATA | jq '.language.values | map(.id, .name)[]')
-    LANGUAGE=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $(_transformChoicesToDialogRadioOptions "$LANGUAGE_SELECTIONS")")
+	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$LANGUAGE_SELECTIONS" $LANGUAGE)
+    LANGUAGE=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeJavaVersion () {
 	JAVA_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.javaVersion.values | map(.id, .name)[]' | sed '0~2 s/^\"/\"Java /g')
-	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 0 $(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS")")
+	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS" "$JAVA_VERSION")
+	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 0 $RADIO_OPTIONS")
 }
 
 
