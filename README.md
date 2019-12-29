@@ -15,5 +15,5 @@ Simple script that uses dialog as a terminal UI for creating new Spring applicat
 - [x] Making the choices in the sub-menus persistent
 - [ ] Tuning the sizes of dialog-boxes to look better
 - [ ] Adding other possible choices that may be important to some people
-- [ ] Making the scripts work on Mac OS X and other possible environments where command line options to programs may differ
+- [x] Making the scripts work on Mac OS X and other possible environments where command line options to programs may differ
 - [ ] Making the script pretty and refactoring
