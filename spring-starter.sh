@@ -65,7 +65,7 @@ function _transformChoicesToDialogRadioOptions() {
 	# I iz stupid, so usually prefer to use sed in smaller blocks like this. Probably a better way to do them in one. I prefer readability :)
 	CHOICES=$1
 	CURRENT_SELECTION=$2
-	echo "$CHOICES" | sed '0~2 s/$/ off/' | sed '{N;s/\n/ /;}' | sed -E "s/(\"$CURRENT_SELECTION\" .*) off/\1 on/" | tr '\n' ' '
+	echo "$CHOICES" | sed 'n;s/$/ off/' | sed '{N;s/\n/ /;}' | sed -E "s/(\"$CURRENT_SELECTION\" .*) off/\1 on/" | tr '\n' ' '
 }
 
 function changeBuildTool() {
@@ -87,7 +87,7 @@ function changeLanguage () {
 }
 
 function changeJavaVersion () {
-	JAVA_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.javaVersion.values | map(.id, .name)[]' | sed '0~2 s/^\"/\"Java /g')
+	JAVA_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.javaVersion.values | map(.id, .name)[]' | sed 'n;s/^\"/\"Java /g')
 	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS" "$JAVA_VERSION")
 	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 0 $RADIO_OPTIONS")
 }
