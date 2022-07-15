@@ -22,7 +22,6 @@ function artifactSettings () {
 			break
 		fi
 
-		# TODO: refactor. Stupid solution :P
 		SELECTIONS=$(echo ${ACTION:8} | sed 's/: /:+/g')
 		SELECTED_TYPE=$(echo $SELECTIONS | cut -d + -f1)
 		SELECTED_VALUE=$(echo $SELECTIONS | cut -d + -f2)
