@@ -1,5 +1,7 @@
 #!/bin/bash
 
+BACK_TITLE='Spring Initializer Terminal Edition'
+
 STARTER_METADATA=$(curl -s -H 'Accept: application/json' https://start.spring.io)
 
 BUILD_TOOL=$(echo $STARTER_METADATA | jq -r '.type.default')
@@ -14,7 +16,7 @@ DEPENDENCIES=""
 function artifactSettings () {
 	while [ 1 ]
 	do
-		ACTION=$(dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --no-cancel --inputmenu "Artifact settings" 0 0 10 "Group id:" "$GROUP_ID" "Artifact id:" "$ARTIFACT_ID" "Description:" "$DESCRIPTION")
+		ACTION=$(dialog --stdout --backtitle "$BACK_TITLE" --no-cancel --inputmenu "Artifact settings" 0 0 10 "Group id:" "$GROUP_ID" "Artifact id:" "$ARTIFACT_ID" "Description:" "$DESCRIPTION")
 		
 		# not renaming, so OK was selected. gtf back to the menu
 		if [ -z $(echo $ACTION | grep RENAMED)]
@@ -57,7 +59,7 @@ function dependencyManagement () {
 	# make it into a format that dialog works with (without newlines)
 	DEPENDENCY_LIST=$(echo $DEPENDENCY_LIST | tr '\n' ' ')
 	
-	DEPENDENCIES=$(eval "dialog --stdout --backtitle \"Spring Initializer Terminal Edition\" --checklist \"Choose dependencies\" 0 0 0 $DEPENDENCY_LIST" | sed 's/ /,/g')
+	DEPENDENCIES=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --checklist \"Choose dependencies\" 0 0 0 $DEPENDENCY_LIST" | sed 's/ /,/g')
 }
 
 function _transformChoicesToDialogRadioOptions() {
@@ -70,31 +72,31 @@ function _transformChoicesToDialogRadioOptions() {
 function changeBuildTool() {
 	BUILD_TOOL_SELECTIONS=$(echo $STARTER_METADATA | jq '.type.values | map(.id, .name)[]')
 	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$BUILD_TOOL_SELECTIONS" "$BUILD_TOOL")
-	BUILD_TOOL=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
+	BUILD_TOOL=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeSpringBootVersion() {
 	SPRING_BOOT_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.bootVersion.values | map(.id, .name)[]')
 	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$SPRING_BOOT_VERSION_SELECTIONS" "$SPRING_BOOT_VERSION")
-	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
+	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeLanguage () {
 	LANGUAGE_SELECTIONS=$(echo $STARTER_METADATA | jq '.language.values | map(.id, .name)[]')
 	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$LANGUAGE_SELECTIONS" $LANGUAGE)
-    LANGUAGE=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
+    LANGUAGE=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeJavaVersion () {
 	JAVA_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.javaVersion.values | map(.id, .name)[]' | sed 'n;s/^\"/\"Java /g')
 	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$JAVA_VERSION_SELECTIONS" "$JAVA_VERSION")
-	JAVA_VERSION=$(eval "dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --radiolist 'Select Java version' 0 0 0 $RADIO_OPTIONS")
+	JAVA_VERSION=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select Java version' 0 0 0 $RADIO_OPTIONS")
 }
 
 
 while [ 1 ]
 do
-	CHOICE=$(dialog --stdout --backtitle 'Spring Initializer Terminal Edition' --title "Select option" --menu "Artifact information:\nGroup id:            $GROUP_ID\nArtifact id:         $ARTIFACT_ID\n\nBuild tool:          $BUILD_TOOL\nLanguage:            $LANGUAGE\nSpring Boot version: $SPRING_BOOT_VERSION\nJava version:        $JAVA_VERSION\n" 0 0 0 "a" "Artifact settings" "b" "Change build tool" "s" "Change Spring Boot version" "l" "Change language" "j" "Change Java version" "d" "Manage dependencies" "c" "Create project")
+	CHOICE=$(dialog --stdout --backtitle "$BACK_TITLE" --title "Select option" --menu "Artifact information:\nGroup id:            $GROUP_ID\nArtifact id:         $ARTIFACT_ID\n\nBuild tool:          $BUILD_TOOL\nLanguage:            $LANGUAGE\nSpring Boot version: $SPRING_BOOT_VERSION\nJava version:        $JAVA_VERSION\n" 0 0 0 "a" "Artifact settings" "b" "Change build tool" "s" "Change Spring Boot version" "l" "Change language" "j" "Change Java version" "d" "Manage dependencies" "c" "Create project")
 
 	if [ $? -ne 0 ]
 	then 
