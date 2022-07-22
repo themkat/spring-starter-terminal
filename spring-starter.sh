@@ -44,12 +44,9 @@ function artifactSettings () {
 
 function dependencyManagement () {
 	# TODO: simple search..?
-	# TODO: could --help-button be used 
-	# TODO: how should descriptions be viewed?
 
 	# get all the possible selections, default to not selected
-	DEPENDENCY_LIST=$(echo $STARTER_METADATA | jq '.dependencies.values | map(.values[]) | map(.id, .name)[]' | sed '{N;s/\n/ /;}' | sed 's/$/ off/')
-	
+	DEPENDENCY_LIST=$(echo $STARTER_METADATA | jq '.dependencies.values | map(.values[]) | map(.id, .name, .description)[]' | sed '{N;N;s/\n/#/g;}' | sed -E 's/(".+")#(".+")#(".+")/\1 \2 off \3/')
 	# turn our currently selected dependencies on
 	for SELECTED_DEPENDENCY in $(echo "$DEPENDENCIES" | tr ',' '\n')
 	do
@@ -58,8 +55,8 @@ function dependencyManagement () {
 
 	# make it into a format that dialog works with (without newlines)
 	DEPENDENCY_LIST=$(echo $DEPENDENCY_LIST | tr '\n' ' ')
-	
-	DEPENDENCIES=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --checklist \"Choose dependencies\" 0 0 0 $DEPENDENCY_LIST" | sed 's/ /,/g')
+    
+	DEPENDENCIES=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --item-help --checklist \"Choose dependencies\" 0 0 0 $DEPENDENCY_LIST" | sed 's/ /,/g')
 }
 
 function _transformChoicesToDialogRadioOptions() {
