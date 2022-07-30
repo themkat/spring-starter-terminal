@@ -69,13 +69,13 @@ function _transformChoicesToDialogRadioOptions() {
 function changeBuildTool() {
 	BUILD_TOOL_SELECTIONS=$(echo $STARTER_METADATA | jq '.type.values | map(.id, .name)[]')
 	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$BUILD_TOOL_SELECTIONS" "$BUILD_TOOL")
-	BUILD_TOOL=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
+	BUILD_TOOL=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select build tool' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeSpringBootVersion() {
 	SPRING_BOOT_VERSION_SELECTIONS=$(echo $STARTER_METADATA | jq '.bootVersion.values | map(.id, .name)[]')
 	RADIO_OPTIONS=$(_transformChoicesToDialogRadioOptions "$SPRING_BOOT_VERSION_SELECTIONS" "$SPRING_BOOT_VERSION")
-	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select language' 0 0 0 $RADIO_OPTIONS")
+	SPRING_BOOT_VERSION=$(eval "dialog --stdout --backtitle \"$BACK_TITLE\" --radiolist 'Select Spring Boot version' 0 0 0 $RADIO_OPTIONS")
 }
 
 function changeLanguage () {
