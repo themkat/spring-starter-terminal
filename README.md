@@ -2,6 +2,9 @@
 Simple script that uses dialog as a terminal UI for creating new Spring application using the Spring Starter / Spring Initializer service. A little quick and dirty, and the UI has major room for improvement relating to sizes. You can create a project, and it will unpack in the folder you are running the script from (useful to have in PATH if you dare ;) ).
 
 
+![screen recording](screenrecording.gif)
+
+
 ## Dependencies
 - bash (or equivalent, also tested with zsh)
 - Standard Unix tools (sed, curl)
