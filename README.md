@@ -1,3 +1,4 @@
+[![Lint script](https://github.com/themkat/spring-starter-terminal/actions/workflows/lint.yml/badge.svg)](https://github.com/themkat/spring-starter-terminal/actions/workflows/lint.yml)
 # Spring Starter Terminal
 Simple script that uses dialog as a terminal UI for creating new Spring application using the Spring Starter / Spring Initializer service. A little quick and dirty, and the UI has major room for improvement relating to sizes. You can create a project, and it will unpack in the folder you are running the script from (useful to have in PATH if you dare ;) ).
 
