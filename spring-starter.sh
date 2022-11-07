@@ -19,7 +19,7 @@ function artifactSettings () {
 		ACTION=$(dialog --stdout --backtitle "$BACK_TITLE" --no-cancel --inputmenu "Artifact settings" 0 0 10 "Group id:" "$GROUP_ID" "Artifact id:" "$ARTIFACT_ID" "Description:" "$DESCRIPTION")
 		
 		# not renaming, so OK was selected. gtf back to the menu
-		if [ -z $(echo $ACTION | grep RENAMED)]
+		if [ -z $(echo "$ACTION" | grep RENAMED) ]
 		then
 			break
 		fi

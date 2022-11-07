@@ -13,5 +13,7 @@ jobs:
         run: |
           sudo apt install -y shellcheck
       - name: Lint script
+        env:
+          SHELLCHECK_OPTS: "-e SC2086"
         run: |
           shellcheck spring-starter.sh
