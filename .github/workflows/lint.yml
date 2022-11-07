@@ -1,0 +1,17 @@
+name: Lint script
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install shellcheck
+        run: |
+          apt install shellcheck
+      - name: Lint script
+        run: |
+          shellcheck spring-starter.sh
