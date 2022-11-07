@@ -14,16 +14,18 @@ DESCRIPTION=$(echo $STARTER_METADATA | jq -r '.description.default')
 DEPENDENCIES=""
 
 function artifactSettings () {
-	while [ 1 ]
+	while true
 	do
 		ACTION=$(dialog --stdout --backtitle "$BACK_TITLE" --no-cancel --inputmenu "Artifact settings" 0 0 10 "Group id:" "$GROUP_ID" "Artifact id:" "$ARTIFACT_ID" "Description:" "$DESCRIPTION")
 		
 		# not renaming, so OK was selected. gtf back to the menu
+        # shellcheck disable=SC2143,SC2046
 		if [ -z $(echo "$ACTION" | grep RENAMED) ]
 		then
 			break
 		fi
 
+        # shellcheck disable=SC2001
 		SELECTIONS=$(echo ${ACTION:8} | sed 's/: /:+/g')
 		SELECTED_TYPE=$(echo $SELECTIONS | cut -d + -f1)
 		SELECTED_VALUE=$(echo $SELECTIONS | cut -d + -f2)
@@ -91,10 +93,11 @@ function changeJavaVersion () {
 }
 
 
-while [ 1 ]
+while true
 do
 	CHOICE=$(dialog --stdout --backtitle "$BACK_TITLE" --title "Select option" --menu "Artifact information:\nGroup id:            $GROUP_ID\nArtifact id:         $ARTIFACT_ID\n\nBuild tool:          $BUILD_TOOL\nLanguage:            $LANGUAGE\nSpring Boot version: $SPRING_BOOT_VERSION\nJava version:        $JAVA_VERSION\n" 0 0 0 "a" "Artifact settings" "b" "Change build tool" "s" "Change Spring Boot version" "l" "Change language" "j" "Change Java version" "d" "Manage dependencies" "c" "Create project")
 
+    # shellcheck disable=SC2181
 	if [ $? -ne 0 ]
 	then 
 		echo "Cancel selected, exiting..."
