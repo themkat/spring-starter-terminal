@@ -13,6 +13,10 @@ Simple script that uses dialog as a terminal UI for creating new Spring applicat
 - jq
 
 
+## Container image
+If you prefer to use the script from a container, [it is available on Docker hub and is called themkat/spring-starter](https://hub.docker.com/r/themkat/spring-starter). You can also build it yourself from this repo using the included Dockerfile using `docker build -t themkat/spring-starter .`.
+
+
 ## What has been done?
 - [x] Being able to choose various project settings like names, Java version, Spring Boot versions, dependencies etc. All from the Spring Starter service.
 - [x] Creating a project in a new direcctory with the same name as the artifact id in the same directory that the script is ran. Should be no need to unpack manually
